@@ -1,15 +1,25 @@
 package com.yorku.command;
-import com.yorku.booking.BookingService;
+import com.yorku.booking.BookingFacade;
+import com.yorku.equipment.Equipment;
+import com.yorku.users.User;
+
 public class ReserveCommand implements Command {
 
-    private BookingService service;
+    private BookingFacade booking;
+    private User user;
+    private Equipment equipment;
+    private int hours;
 
-    public ReserveCommand(BookingService service) {
-        this.service = service;
+    // NEW constructor
+    public ReserveCommand(BookingFacade booking, User user, Equipment equipment, int hours) {
+        this.booking = booking;
+        this.user = user;
+        this.equipment = equipment;
+        this.hours = hours;
     }
 
     @Override
     public void execute() {
-        service.reserve();
+       booking.reserveEquipment(user, equipment, hours);
     }
 }
