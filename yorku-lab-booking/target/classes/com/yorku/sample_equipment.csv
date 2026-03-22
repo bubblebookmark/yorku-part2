@@ -1,0 +1,11 @@
+EquipmentID,Name,Type,Location,Availability,Notes
+EQ-001,Microscope,Optical,Lab A,Available,High-resolution microscope
+EQ-002,Centrifuge,Chemistry,Lab B,In Use,Requires safety training
+EQ-003,Spectrometer,Physics,Lab C,Available,Calibrated last week
+EQ-004,3D Printer,Engineering,Lab D,Available,PLA only
+EQ-005,Oscilloscope,Electronics,Lab E,Under Maintenance,Check voltage range
+EQ-006,Pipette Set,Chemistry,Lab B,Available,Adjustable volumes
+EQ-007,Autoclave,Chemistry,Lab B,In Use,Steam sterilization
+EQ-008,Laser Cutter,Engineering,Lab D,Available,Requires safety goggles
+EQ-009,Incubator,Biology,Lab F,Available,Temperature controlled
+EQ-010,Flow Cytometer,Biology,Lab F,In Use,Handle samples carefully

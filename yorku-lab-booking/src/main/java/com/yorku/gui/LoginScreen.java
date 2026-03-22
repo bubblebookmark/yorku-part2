@@ -1,4 +1,11 @@
 package com.yorku.gui;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.yorku.coordinator.HeadLabCoordinator;
 import com.yorku.coordinator.LabManager;
 import com.yorku.users.User;
@@ -14,11 +21,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-
 public class LoginScreen {
 
     private Stage stage;
-    private LabManager labManager; // reference to LabManager system
+    private LabManager labManager;
 
     public LoginScreen(Stage stage, LabManager labManager) {
         this.stage = stage;
@@ -26,7 +32,6 @@ public class LoginScreen {
     }
 
     public void show() {
-
         Label title = new Label("YorkU Lab Booking System");
 
         TextField emailField = new TextField();
@@ -42,38 +47,70 @@ public class LoginScreen {
         userType.getItems().addAll("student", "faculty", "researcher", "guest", "lab_manager", "head coordinator");
         userType.setPromptText("Select User Type");
 
-        Button loginBtn = new Button("Login");
+        // Sample Users Dropdown
+        ComboBox<String> sampleUsers = new ComboBox<>();
+        sampleUsers.setPromptText("Load Sample User");
 
+        // Read CSV directly
+        List<String[]> users = new ArrayList<>();
+        try (InputStream is = getClass().getResourceAsStream("/com/yorku/sample_users.csv")) {
+            if (is == null) throw new Exception("sample_users.csv not found in resources");
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+                String line;
+                br.readLine(); // skip header
+                while ((line = br.readLine()) != null) {
+                    String[] parts = line.split(",", -1);
+                    users.add(parts);
+                    sampleUsers.getItems().add(parts[0]); // add Name as display
+                }
+            }
+
+            // Auto-fill fields when a sample user is selected
+            sampleUsers.setOnAction(ev -> {
+                int index = sampleUsers.getSelectionModel().getSelectedIndex();
+                if (index >= 0) {
+                    String[] selectedUser = users.get(index);
+                    // CSV columns: Name, UserType, Email, Password, ID_Certification
+                    userType.setValue(selectedUser[1]);
+                    emailField.setText(selectedUser[2]);
+                    passwordField.setText(selectedUser[3]);
+                    idField.setText(selectedUser[4]);
+                }
+            });
+        } catch (Exception ex) {
+            new Alert(Alert.AlertType.ERROR, "Failed to load sample users: " + ex.getMessage()).show();
+        }
+
+        Button loginBtn = new Button("Login");
         loginBtn.setOnAction(e -> {
             try {
-               String type = userType.getValue();
+                String type = userType.getValue();
                 String email = emailField.getText();
                 String password = passwordField.getText();
                 String id = idField.getText();
 
-                // 1️⃣ Check that email is entered
+                // Validation
                 if (email == null || email.trim().isEmpty()) {
                     new Alert(Alert.AlertType.ERROR, "Email is required").show();
                     return;
                 }
                 if (password == null || password.trim().isEmpty()) {
-                    new Alert(Alert.AlertType.ERROR, "password is required").show();
+                    new Alert(Alert.AlertType.ERROR, "Password is required").show();
                     return;
                 }
                 if (id == null || id.trim().isEmpty()) {
-                    new Alert(Alert.AlertType.ERROR, "id is required").show();
+                    new Alert(Alert.AlertType.ERROR, "ID is required").show();
                     return;
                 }
-
-                // 2️⃣ Check that user type is selected
                 if (type == null) {
                     new Alert(Alert.AlertType.ERROR, "Select a user type").show();
                     return;
                 }
 
+                // Login handling
                 if (type.equals("head coordinator") && email.equals("Alice@yorku.ca")) {
                     HeadCoordinatorApprovalScreen approvalScreen =
-                            new HeadCoordinatorApprovalScreen(stage, HeadLabCoordinator.getInstance(),this);
+                            new HeadCoordinatorApprovalScreen(stage, HeadLabCoordinator.getInstance(), this);
                     approvalScreen.show();
 
                 } else if (type.equals("lab_manager")) {
@@ -81,13 +118,7 @@ public class LoginScreen {
                     labScreen.show();
 
                 } else {
-                    User user = UserFactory.createUser(
-                            type,
-                            emailField.getText(),
-                            passwordField.getText(),
-                            idField.getText()
-                    );
-
+                    User user = UserFactory.createUser(type, email, password, id);
                     ReservationScreen reservation = new ReservationScreen(stage, user, labManager, this);
                     reservation.show();
                 }
@@ -98,10 +129,10 @@ public class LoginScreen {
         });
 
         VBox layout = new VBox(10);
-        layout.getChildren().addAll(title, emailField, passwordField, idField, userType, loginBtn);
+        layout.getChildren().addAll(title, emailField, passwordField, idField, userType, sampleUsers, loginBtn);
         layout.setStyle("-fx-padding: 15;");
 
-        stage.setScene(new Scene(layout, 400, 300));
+        stage.setScene(new Scene(layout, 400, 350));
         stage.setTitle("Login");
         stage.show();
     }
