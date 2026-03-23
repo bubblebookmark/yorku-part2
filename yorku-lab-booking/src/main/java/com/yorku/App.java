@@ -7,8 +7,6 @@ import com.yorku.gui.LoginScreen;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-
-
 public class App extends Application {
     private static LabManager labManager;
 

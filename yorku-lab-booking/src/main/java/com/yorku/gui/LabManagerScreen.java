@@ -40,6 +40,10 @@ public class LabManagerScreen {
 
         Button addBtn = new Button("Add Equipment");
         ComboBox<String> equipmentList = new ComboBox<>();
+        // Populate the ComboBox with existing equipment
+        for (Equipment eq : manager.getAllEquipment()) {
+            equipmentList.getItems().add(eq.getId() + " - " + eq.getDescription());
+        }
 
         Button enableBtn = new Button("Enable");
         Button disableBtn = new Button("Disable");

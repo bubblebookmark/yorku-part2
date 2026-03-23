@@ -1,5 +1,8 @@
 package com.yorku.coordinator;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -12,10 +15,43 @@ public class LabManager {
     private String email, password, id;
     private Map<String, Equipment> equipmentMap = new HashMap<>();
 
-    public LabManager(String email,String password,String id) {
-        this.email = email;
-         this.password = password;
-          this.id = id;
+    public LabManager(String name) {
+        this.name = name;
+        loadEquipmentFromCSV();
+    }
+
+    private void loadEquipmentFromCSV() {
+        try (InputStream is = getClass().getResourceAsStream("/com/yorku/sample_equipment.csv")) {
+            if (is == null) {
+                System.out.println("sample_equipment.csv not found");
+                return;
+            }
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+                String line;
+                br.readLine(); // skip header
+                while ((line = br.readLine()) != null) {
+                    String[] parts = line.split(",", -1);
+                    if (parts.length >= 6) {
+                        String id = parts[0];
+                        String name = parts[1];
+                        String type = parts[2];
+                        String location = parts[3];
+                        String availability = parts[4];
+                        String notes = parts[5];
+                        String description = name + " (" + type + ") - " + notes;
+                        Equipment eq = new Equipment(id, description, location);
+                        if ("Available".equals(availability)) {
+                            eq.setAvailable(true);
+                        } else {
+                            eq.setAvailable(false);
+                        }
+                        addEquipment(eq);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error loading equipment: " + e.getMessage());
+        }
     }
 
     public String getName() { return email; }

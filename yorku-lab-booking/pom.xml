@@ -12,7 +12,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>21</maven.compiler.release>
-        <javafx.version>21</javafx.version>
+        <javafx.version>17</javafx.version>
     </properties>
 
     <dependencies>
@@ -37,7 +37,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
+                <version>3.12.0</version>
                 <configuration>
                     <release>21</release>
                 </configuration>
@@ -46,9 +46,15 @@
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.8</version>
+                <version>0.0.13</version>
                 <configuration>
+                    <executable>C:\Program Files\Eclipse Adoptium\jdk-21.0.6.7-hotspot\bin\java.exe</executable>
                     <mainClass>com.yorku.App</mainClass>
+                    <options>
+                        <option>-Xmx256m</option>
+                        <option>-Xms128m</option>
+                        <option>-XX:+UseSerialGC</option>
+                    </options>
                 </configuration>
             </plugin>
 
