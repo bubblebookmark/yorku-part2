@@ -1,12 +1,19 @@
 package human_tests;
 
-import com.yorku.coordinator.HeadLabCoordinator;
-import com.yorku.coordinator.LabManager;
-import com.yorku.users.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import com.yorku.coordinator.HeadLabCoordinator;
+import com.yorku.coordinator.LabManager;
+import com.yorku.users.Student;
+import com.yorku.users.User;
 
 public class HeadLabCoordinatorTest {
 
@@ -19,9 +26,9 @@ public class HeadLabCoordinatorTest {
 
  @Test
 void testGenerateLabManager() {
-    LabManager manager = head.generateLabManager("Alice", "123", "alice@yorku.ca", "555-5555");
+    LabManager manager = head.generateLabManager("Alice", "alice@yorku.ca", "123", "555-5555");
     assertNotNull(manager);
-    assertEquals("Alice", manager.getName());
+    assertEquals("alice@yorku.ca", manager.getName());
 }
 
     @Test
