@@ -14,5 +14,6 @@
 	<classpathentry kind="lib" path="/Users/oyinkan/Downloads/openjfx-21.0.10_osx-aarch64_bin-sdk/javafx-sdk-21.0.10/lib/javafx.media.jar"/>
 	<classpathentry kind="lib" path="/Users/oyinkan/Downloads/openjfx-21.0.10_osx-aarch64_bin-sdk/javafx-sdk-21.0.10/lib/javafx-swt.jar"/>
 	<classpathentry kind="lib" path="/Users/oyinkan/Downloads/openjfx-21.0.10_osx-aarch64_bin-sdk/javafx-sdk-21.0.10/lib/javafx.fxml.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="output" path="yorku-lab-booking/target/classes"/>
 </classpath>
