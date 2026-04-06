@@ -103,6 +103,7 @@
                         <param>com.yorku.epuipment.*</param>
                         <param>com.yorku.observer.*</param>
                         <param>com.yorku.users.*</param>
+                        <param>com.yorku.App.java</param>
                     </targetClasses>
                     <targetTests>
                         <!-- <param>AI_assistant.*Test</param> -->
